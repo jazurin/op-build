@@ -4,8 +4,10 @@
 #
 ################################################################################
 
-SKIBOOT_VERSION = skiboot-5.0.4
+SKIBOOT_VERSION = $(call qstrip,$(BR2_SKIBOOT_VERSION))
+
 SKIBOOT_SITE = $(call github,open-power,skiboot,$(SKIBOOT_VERSION))
+SKIBOOT_LICENSE = Apache-2.0
 SKIBOOT_INSTALL_IMAGES = YES
 SKIBOOT_INSTALL_TARGET = NO
 
@@ -18,7 +20,7 @@ ifeq ($(BR2_TARGET_SKIBOOT_EMBED_PAYLOAD),y)
 SKIBOOT_MAKE_OPTS += KERNEL="$(BINARIES_DIR)/$(LINUX_IMAGE_NAME)"
 
 ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
-SKIBOOT_DEPENDENCIES += linux26-rebuild-with-initramfs
+SKIBOOT_DEPENDENCIES += linux-rebuild-with-initramfs
 else
 SKIBOOT_DEPENDENCIES += linux
 endif
@@ -26,7 +28,7 @@ endif
 endif
 
 define SKIBOOT_BUILD_CMDS
-	$(TARGET_CONFIGURE_OPTS) SKIBOOT_VERSION=$(SKIBOOT_VERSION) \
+	$(TARGET_CONFIGURE_OPTS) SKIBOOT_VERSION=`cat $(SKIBOOT_VERSION_FILE)` \
 		$(MAKE) $(SKIBOOT_MAKE_OPTS) -C $(@D) all
 endef
 

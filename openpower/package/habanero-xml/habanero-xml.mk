@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-HABANERO_XML_VERSION ?= 03d911f12311ba884ec9e08a6c114daabfce545a
+HABANERO_XML_VERSION ?= 5565b8fe1feaa4cdb3b296912069c02f46c4cc59
 HABANERO_XML_SITE ?= $(call github,open-power,habanero-xml,$(HABANERO_XML_VERSION))
 
 HABANERO_XML_LICENSE = Apache-2.0
-HABANERO_XML_DEPENDENCIES = hostboot-install-images openpower-mrw-install-images common-p8-xml-install-images
+HABANERO_XML_DEPENDENCIES = hostboot openpower-mrw common-p8-xml
 
 HABANERO_XML_INSTALL_IMAGES = YES
 HABANERO_XML_INSTALL_TARGET = YES
@@ -39,8 +39,10 @@ define HABANERO_XML_BUILD_CMDS
         $(MRW_HB_TOOLS)/mergexml.sh $(MRW_SCRATCH)/$(BR2_HABANERO_SYSTEM_XML_FILENAME) \
             $(MRW_HB_TOOLS)/attribute_types.xml \
             $(MRW_HB_TOOLS)/attribute_types_hb.xml \
+            $(MRW_HB_TOOLS)/attribute_types_openpower.xml \
             $(MRW_HB_TOOLS)/target_types_merged.xml \
             $(MRW_HB_TOOLS)/target_types_hb.xml \
+            $(MRW_HB_TOOLS)/target_types_openpower.xml \
             $(MRW_SCRATCH)/$(BR2_HABANERO_MRW_XML_FILENAME) > $(MRW_HB_TOOLS)/temporary_hb.hb.xml;
 
         # creating the targeting binary
